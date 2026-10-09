@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CLINIC } from '../lib/clinic-content';
+---
+
+<BaseLayout title="Contato - SPA LUNAR" description="Fale com a SPA LUNAR no Morumbi, Sao Paulo.">
+  <section class="lw-hero lw-simple">
+    <div>
+      <p class="lw-kicker">Contato</p>
+      <h1>Fale com a SPA LUNAR.</h1>
+      <p>Agende sua avaliacao e encontre o protocolo ideal para voce.</p>
+    </div>
+  </section>
+
+  <section class="lw-contact-grid">
+    <article>
+      <h3>Canais diretos</h3>
+      <ul>
+        <li><strong>WhatsApp:</strong> <a href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">{CLINIC.phoneDisplay}</a></li>
+        <li><strong>Telefone:</strong> <a href={CLINIC.phoneHref}>{CLINIC.phoneDisplay}</a></li>
+        <li><strong>E-mail:</strong> <a href={`mailto:${CLINIC.email}`}>{CLINIC.email}</a></li>
+        <li><strong>Instagram:</strong> <a href={CLINIC.instagramUrl} target="_blank" rel="noreferrer">@spalunaresteticaevelinoliveira</a></li>
+      </ul>
+      <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Falar no WhatsApp</a>
+    </article>
+
+    <article>
+      <h3>Endereco</h3>
+      <p>{CLINIC.address.street}<br />{CLINIC.address.neighborhood}<br />{CLINIC.address.city}<br />CEP {CLINIC.address.zip}</p>
+      <iframe
+        title="Localizacao SPA LUNAR"
+        src="https://www.google.com/maps?q=Rua+David+Ben+Gurion,+412+-+Morumbi,+S%C3%A3o+Paulo&output=embed"
+        width="100%"
+        height="320"
+        loading="lazy"
+      ></iframe>
+    </article>
+  </section>
+</BaseLayout>

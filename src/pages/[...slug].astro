@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  buildUrlToSlugMap,
+  cleanPageTitle,
+  getRouteFromSlug,
+  internalUrlsToRoutes,
+  loadPagesMap,
+  loadSiteIndex,
+  slugToLabel,
+  splitMainText,
+} from '../lib/site-data';
+
+const siteIndex = loadSiteIndex();
+const urlToSlug = buildUrlToSlugMap(siteIndex);
+
+export function getStaticPaths() {
+  const pagesMap = loadPagesMap();
+  return Object.keys(pagesMap)
+    .filter((slug) => slug !== 'home')
+    .map((slug) => ({
+      params: { slug },
+      props: { slug, page: pagesMap[slug] },
+    }));
+}
+
+const { page, slug } = Astro.props;
+const paragraphs = splitMainText(page.main_text).slice(0, 45);
+const relatedRoutes = internalUrlsToRoutes(page.links.internal, urlToSlug)
+  .filter((route) => route !== getRouteFromSlug(slug))
+  .slice(0, 8);
+const related = relatedRoutes
+  .map((route) => {
+    const routeSlug = route === '/' ? 'home' : route.replaceAll('/', '');
+    return siteIndex.paginas.find((item) => item.slug === routeSlug);
+  })
+  .filter(Boolean);
+const heroImage = page.images.find((img) => img.local_path)?.local_path ?? null;
+---
+
+<BaseLayout title={page.title || slug} description={page.meta_description || undefined}>
+  <section class="hero hero-page">
+    <div class="hero-copy">
+      <p class="eyebrow">Tratamento</p>
+      <h1>{page.headings.h1[0] || cleanPageTitle(page.title) || slugToLabel(slug)}</h1>
+      {page.meta_description ? <p class="subtitle">{page.meta_description}</p> : null}
+
+      {page.breadcrumbs.length ? (
+        <nav class="breadcrumbs">
+          {page.breadcrumbs.map((crumb) => <span>{crumb}</span>)}
+        </nav>
+      ) : null}
+    </div>
+    {heroImage ? (
+      <div class="hero-media">
+        <img src={`/${heroImage}`} alt={page.title || slug} loading="eager" />
+      </div>
+    ) : null}
+  </section>
+
+  <section class="section reading-grid">
+    <article class="page-content">
+      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </article>
+    {related.length ? (
+      <aside class="side-panel">
+        <h2>Outros tratamentos</h2>
+        <ul>
+          {related.slice(0, 6).map((item) => (
+            <li>
+              <a href={getRouteFromSlug(item.slug)}>{cleanPageTitle(item.titulo) || slugToLabel(item.slug)}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    ) : null}
+  </section>
+
+  {page.images.length ? (
+    <section class="section">
+      <h2>Galeria da página</h2>
+      <div class="gallery">
+        {page.images.map((img) =>
+          img.local_path ? (
+            <figure>
+              <img src={`/${img.local_path}`} alt={img.alt || page.title} loading="lazy" />
+              {img.alt ? <figcaption>{img.alt}</figcaption> : null}
+            </figure>
+          ) : null
+        )}
+      </div>
+    </section>
+  ) : null}
+
+</BaseLayout>

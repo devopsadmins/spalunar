@@ -1,0 +1,16 @@
+{
+    "name": "spalunar-site-migracao",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "prepare:site": "node scripts/prepare-site.mjs",
+        "dev": "npm run prepare:site && astro dev",
+        "build": "npm run prepare:site && astro build",
+        "preview": "astro preview",
+        "check": "astro check"
+    },
+    "dependencies": {
+        "astro": "^4.16.18"
+    }
+}

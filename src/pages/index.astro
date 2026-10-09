@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CLINIC, TESTIMONIALS, getHeroImage, getServiceCards } from '../lib/clinic-content';
+
+const heroImage = getHeroImage();
+const serviceCards = getServiceCards();
+
+const areas = [
+  {
+    n: '01',
+    name: 'Tratamento Corporal',
+    desc: 'Protocolos para modelar, tonificar e tratar a pele com foco em reducao de medidas, celulite e flacidez.',
+    service: serviceCards[0],
+    offset: false,
+  },
+  {
+    n: '02',
+    name: 'Rejuvenescimento Facial',
+    desc: 'Limpeza profunda, hidratacao e renovacao celular com tecnicas adaptadas ao seu tipo de pele.',
+    service: serviceCards[1] || serviceCards[0],
+    offset: true,
+  },
+  {
+    n: '03',
+    name: 'SPA e Bem-estar',
+    desc: 'Massagens e rituais sensoriais para desacelerar, aliviar tensoes e recuperar sua energia.',
+    service: serviceCards[3] || serviceCards[2] || serviceCards[0],
+    offset: false,
+  },
+];
+
+const pillars = [
+  {
+    n: '01.',
+    title: '20 anos de experiencia',
+    desc: 'Duas decadas de dedicacao a estetica avancada, com atendimento humano e personalizado.',
+  },
+  {
+    n: '02.',
+    title: 'Especialista reconhecida',
+    desc: 'Fundadora com formacao academica, atuacao clinica e presenca em programas de TV.',
+  },
+  {
+    n: '03.',
+    title: 'Ambiente acolhedor',
+    desc: 'Um refugio no Morumbi para elevar autoestima com conforto, seguranca e resultados reais.',
+  },
+];
+---
+
+<BaseLayout title="SPA LUNAR Clinica Evelin Oliveira" description="Estetica facial e corporal avancada com atendimento personalizado no Morumbi.">
+  <section class="lw-hero-home">
+    <div class="lw-copy">
+      <p class="lw-kicker">Clinica Evelin Oliveira · Morumbi</p>
+      <h1>Estetica facial e corporal <span>avancada</span>.</h1>
+      <p>
+        Ha 20 anos unindo experiencia e inovacao para promover beleza, saude e bem-estar.
+        Um refugio dedicado a sua autoestima.
+      </p>
+      <div class="lw-actions">
+        <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Quero agendar avaliacao</a>
+        <a class="lw-btn ghost" href="/sobre/">Conhecer a clinica</a>
+      </div>
+    </div>
+    <div class="lw-image-wrap">
+      {heroImage ? <img src={`/${heroImage}`} alt="Ambiente da SPA LUNAR" loading="eager" /> : null}
+    </div>
+  </section>
+
+  <section class="lw-about-band" id="sobre">
+    <div class="lw-centered">
+      <p class="lw-kicker">Quem somos</p>
+      <h2>Duas decadas dedicadas a sua melhor versao.</h2>
+      <p>
+        Na <strong>SPA LUNAR Clinica Evelin Oliveira</strong>, unimos experiencia e inovacao para oferecer
+        tratamentos que promovem beleza, saude e bem-estar.
+      </p>
+      <a class="lw-link" href="/sobre/">Ler a historia completa</a>
+    </div>
+  </section>
+
+  <section class="lw-areas" id="tratamentos">
+    <header>
+      <h2>Nossas tres frentes de cuidado.</h2>
+      <p>Tratamentos personalizados para o seu ritmo e objetivo.</p>
+    </header>
+    <div class="lw-areas-grid">
+      {areas.map((item) => (
+        <article class={`lw-area-card${item.offset ? ' offset' : ''}`}>
+          {item.service?.image ? <img src={`/${item.service.image}`} alt={item.name} loading="lazy" /> : null}
+          <div>
+            <span>{item.n}</span>
+            <h3>{item.name}</h3>
+            <p>{item.desc}</p>
+            <a class="lw-link" href={`/servicos/${item.service?.slug || ''}/`}>Ver protocolo</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="lw-featured" id="servicos">
+    <div class="lw-featured-head">
+      <h2>Protocolos em destaque</h2>
+      <a class="lw-link" href="/servicos/">Ver todos</a>
+    </div>
+    <div class="lw-featured-grid">
+      {serviceCards.map((service) => (
+        <article class="lw-featured-card">
+          {service.image ? <img src={`/${service.image}`} alt={service.title} loading="lazy" /> : null}
+          <div>
+            <h3>{service.title}</h3>
+            <p>{service.short}</p>
+            <a class="lw-link" href={`/servicos/${service.slug}/`}>Ver detalhes</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="lw-pillars" id="diferenciais">
+    <h2>Por que confiar no SPA LUNAR</h2>
+    <div>
+      {pillars.map((item) => (
+        <article>
+          <span>{item.n}</span>
+          <h3>{item.title}</h3>
+          <p>{item.desc}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="lw-testimonials-dark" id="depoimentos">
+    <header>
+      <p class="lw-kicker">Depoimentos</p>
+      <h2>A palavra de quem ja viveu a experiencia.</h2>
+    </header>
+    <div>
+      {TESTIMONIALS.map((item) => (
+        <blockquote>
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <p>"{item.text}"</p>
+          <cite>{item.name}</cite>
+        </blockquote>
+      ))}
+    </div>
+  </section>
+
+  <section class="lw-final-cta" id="contato">
+    <h2>Libere sua autoconfianca.</h2>
+    <p>
+      Conte com a SPA LUNAR para uma rotina de cuidados que inspira autoestima e seguranca.
+    </p>
+    <div class="lw-actions center">
+      <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Agendar pelo WhatsApp</a>
+      <a class="lw-btn ghost" href="/contato/">Ver contato completo</a>
+    </div>
+  </section>
+</BaseLayout>

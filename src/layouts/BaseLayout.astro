@@ -1,0 +1,74 @@
+---
+import '../styles/site.css';
+import { CLINIC } from '../lib/clinic-content';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Spa Lunar - Conteudo migrado e estruturado' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <header class="site-header">
+      <a href="/" class="brand">
+        <span class="brand-mark">SL</span>
+        <span>SPA LUNAR</span>
+      </a>
+      <nav class="top-nav">
+        <a href="/">Inicio</a>
+        <a href="/servicos/">Servicos</a>
+        <a href="/sobre/">Sobre</a>
+        <a href="/depoimentos/">Depoimentos</a>
+        <a href="/contato/">Contato</a>
+        <a href="/blog/">Blog</a>
+        <a href="/mapa/">Mapa</a>
+        <a class="top-nav-cta" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Agendar</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <section class="footer-panel">
+        <div>
+          <p class="footer-kicker">Clinica Evelin Oliveira</p>
+          <h3>{CLINIC.name}</h3>
+          <p>Estetica facial e corporal avancada no Morumbi, com foco em resultado, seguranca e bem-estar.</p>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <ul>
+            <li><a href={CLINIC.phoneHref}>{CLINIC.phoneDisplay}</a></li>
+            <li><a href={`mailto:${CLINIC.email}`}>{CLINIC.email}</a></li>
+            <li>{CLINIC.address.street}</li>
+            <li>{CLINIC.address.neighborhood} - {CLINIC.address.city}</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Links</h4>
+          <ul>
+            <li><a href="/servicos/">Servicos</a></li>
+            <li><a href="/sobre/">Sobre</a></li>
+            <li><a href="/depoimentos/">Depoimentos</a></li>
+            <li><a href="/blog/">Blog</a></li>
+          </ul>
+        </div>
+      </section>
+      <p class="footer-copy">© 2026 SPA LUNAR Clinica Evelin Oliveira. Todos os direitos reservados.</p>
+    </footer>
+  </body>
+</html>

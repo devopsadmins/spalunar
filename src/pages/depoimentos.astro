@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CLINIC, TESTIMONIALS } from '../lib/clinic-content';
+---
+
+<BaseLayout title="Depoimentos - SPA LUNAR" description="Veja relatos de clientes da SPA LUNAR.">
+  <section class="lw-hero lw-simple">
+    <div>
+      <p class="lw-kicker">Depoimentos</p>
+      <h1>A palavra de quem ja viveu a experiencia.</h1>
+      <p>Relatos reais sobre atendimento, ambiente e resultados.</p>
+    </div>
+  </section>
+
+  <section class="lw-testimonials">
+    {TESTIMONIALS.map((item) => (
+      <blockquote>
+        <p>"{item.text}"</p>
+        <cite>{item.name}</cite>
+      </blockquote>
+    ))}
+  </section>
+
+  <section class="lw-center">
+    <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Agendar avaliacao</a>
+  </section>
+</BaseLayout>

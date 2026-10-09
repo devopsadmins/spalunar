@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cleanPageTitle, getRouteFromSlug, loadSiteIndex, slugToLabel } from '../lib/site-data';
+
+const index = loadSiteIndex();
+const grouped = index.paginas.reduce((acc, page) => {
+  if (!acc[page.tipo]) {
+    acc[page.tipo] = [];
+  }
+  acc[page.tipo].push(page);
+  return acc;
+}, {} as Record<string, typeof index.paginas>);
+
+const orderedTypes = ['home', 'corrente-russa', 'criolipolise', 'detox-corporal', 'drenagens-linfaticas', 'institucional'];
+const typeLabel: Record<string, string> = {
+  home: 'Inicio',
+  'corrente-russa': 'Corrente Russa',
+  criolipolise: 'Criolipolise',
+  'detox-corporal': 'Detox Corporal',
+  'drenagens-linfaticas': 'Drenagens Linfaticas',
+  institucional: 'Outras paginas',
+};
+---
+
+<BaseLayout title="Mapa do Site - SPA LUNAR" description="Mapa completo das páginas migradas para reconstrução.">
+  <section class="hero hero-map">
+    <div class="hero-copy">
+      <p class="eyebrow">Navegacao</p>
+      <h1>Mapa do site</h1>
+      <p class="subtitle">Todas as paginas organizadas por tipo para facilitar manutencao e revisao de conteudo.</p>
+    </div>
+    <div class="hero-media map-total">
+      <strong>{index.total_paginas}</strong>
+      <span>paginas renderizaveis</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <p>Total de páginas renderizáveis: {index.total_paginas}</p>
+  </section>
+
+  {orderedTypes.filter((tipo) => grouped[tipo]?.length).map((tipo) => (
+    <section class="section map-section">
+      <h2>{typeLabel[tipo] || slugToLabel(tipo)}</h2>
+      <ul class="link-list">
+        {grouped[tipo]?.map((page) => (
+          <li>
+            <a href={getRouteFromSlug(page.slug)}>{cleanPageTitle(page.titulo) || slugToLabel(page.slug)}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>

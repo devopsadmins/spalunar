@@ -1,0 +1,10 @@
+---
+description: Aplicar baseline de engenharia e documentacao do projeto0 no repositorio spalunar
+alwaysApply: true
+---
+
+- Usar AGENTS.md e docs/ como fonte operacional canonicamente versionada.
+- Nao inserir segredos em codigo ou documentacao.
+- Registrar em ADR qualquer excecao de arquitetura, seguranca, API ou operacao.
+- Atualizar docs/api em mudancas de contrato publico.
+- Validar localmente antes de concluir alteracoes.

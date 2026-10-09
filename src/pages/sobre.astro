@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CLINIC, getHeroImage } from '../lib/clinic-content';
+
+const hero = getHeroImage();
+---
+
+<BaseLayout title="Sobre - SPA LUNAR" description="Conheca a historia da SPA LUNAR e da fundadora Evelin Oliveira.">
+  <section class="lw-hero">
+    <div>
+      <p class="lw-kicker">Nossa historia</p>
+      <h1>Duas decadas dedicadas a sua melhor versao.</h1>
+      <p>Na SPA LUNAR, unimos experiencia e inovacao para entregar protocolos de estetica facial e corporal com atendimento personalizado.</p>
+      <p>Nossa fundadora, Evelin Oliveira, e esteticista, cosmetologa, professora e palestrante, com presenca constante em programas de TV.</p>
+    </div>
+    {hero ? <img src={`/${hero}`} alt={CLINIC.name} loading="eager" /> : null}
+  </section>
+
+  <section class="lw-pillars">
+    <article>
+      <span>01.</span>
+      <h3>20 anos de experiencia</h3>
+      <p>Atendimento especializado com foco em resultado e seguranca.</p>
+    </article>
+    <article>
+      <span>02.</span>
+      <h3>Especialista reconhecida</h3>
+      <p>Formacao academica e vivencia pratica no cuidado estetico integral.</p>
+    </article>
+    <article>
+      <span>03.</span>
+      <h3>Ambiente acolhedor</h3>
+      <p>Um espaco planejado para bem-estar, conforto e autoestima.</p>
+    </article>
+  </section>
+</BaseLayout>

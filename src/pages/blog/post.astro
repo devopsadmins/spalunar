@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Post - Blog SPA LUNAR" description="Artigo do blog SPA LUNAR">
+  <section class="section">
+    <a href="/blog/">← Voltar para o blog</a>
+  </section>
+
+  <article class="section" id="post-container">
+    <p>Carregando artigo...</p>
+  </article>
+
+  <script>
+    const container = document.getElementById('post-container');
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+
+    const sanitize = (text) => String(text || '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+
+    const markdownToHtml = (md) => {
+      const safe = sanitize(md);
+      return safe
+        .replace(/^###\s+(.*)$/gim, '<h3>$1</h3>')
+        .replace(/^##\s+(.*)$/gim, '<h2>$1</h2>')
+        .replace(/^#\s+(.*)$/gim, '<h1>$1</h1>')
+        .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+        .replace(/\n\n+/g, '</p><p>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+    };
+
+    if (!slug) {
+      container.innerHTML = '<p>Slug do artigo nao informado.</p>';
+    } else {
+      fetch(`/api/blog/posts/${slug}`)
+        .then((res) => {
+          if (!res.ok) throw new Error('not-found');
+          return res.json();
+        })
+        .then((post) => {
+          const cover = post.cover_image ? `<img class="blog-post-cover" src="${post.cover_image}" alt="${sanitize(post.title)}" loading="eager" />` : '';
+          container.innerHTML = `
+            ${cover}
+            <h1>${sanitize(post.title)}</h1>
+            ${post.excerpt ? `<p class="subtitle">${sanitize(post.excerpt)}</p>` : ''}
+            <div class="blog-content">${markdownToHtml(post.content_md || '')}</div>
+          `;
+        })
+        .catch(() => {
+          container.innerHTML = '<p>Post nao encontrado.</p>';
+        });
+    }
+  </script>
+</BaseLayout>

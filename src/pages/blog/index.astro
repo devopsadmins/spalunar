@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Blog - SPA LUNAR" description="Conteudos sobre estetica, bem-estar e cuidados corporais.">
+  <section class="hero hero-map">
+    <div class="hero-copy">
+      <p class="eyebrow">Conteudo</p>
+      <h1>Blog SPA LUNAR</h1>
+      <p class="subtitle">Dicas, cuidados e novidades sobre estetica facial e corporal.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div id="blog-list" class="blog-grid"></div>
+    <p id="blog-empty" style="display:none">Nenhum post publicado no momento.</p>
+  </section>
+
+  <script>
+    const listEl = document.getElementById('blog-list');
+    const emptyEl = document.getElementById('blog-empty');
+
+    const titleize = (value) => value || 'Sem titulo';
+
+    fetch('/api/blog/posts?published_only=true&page=1&page_size=24')
+      .then((res) => res.json())
+      .then((items) => {
+        if (!Array.isArray(items) || items.length === 0) {
+          emptyEl.style.display = 'block';
+          return;
+        }
+
+        listEl.innerHTML = items
+          .map((item) => {
+            const excerpt = item.excerpt || 'Clique para ler o artigo completo.';
+            const cover = item.cover_image ? `<img class="blog-cover" src="${item.cover_image}" alt="${titleize(item.title)}" loading="lazy" />` : '';
+            return `
+              <article class="blog-card">
+                ${cover}
+                <h3><a href="/blog/post/?slug=${item.slug}">${titleize(item.title)}</a></h3>
+                <p>${excerpt}</p>
+                <a class="btn primary" href="/blog/post/?slug=${item.slug}">Ler artigo</a>
+              </article>
+            `;
+          })
+          .join('');
+      })
+      .catch(() => {
+        emptyEl.style.display = 'block';
+        emptyEl.textContent = 'Nao foi possivel carregar os posts agora.';
+      });
+  </script>
+</BaseLayout>

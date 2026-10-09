@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CLINIC, getServiceCards } from '../../lib/clinic-content';
+import { cleanPageTitle, loadPagesMap, splitMainText } from '../../lib/site-data';
+
+export function getStaticPaths() {
+  const cards = getServiceCards();
+  return cards.map((card) => ({
+    params: { slug: card.slug },
+    props: { card },
+  }));
+}
+
+const { card } = Astro.props;
+const pages = loadPagesMap();
+const page = pages[card.slug];
+const title = cleanPageTitle(page?.title || card.title);
+const paragraphs = splitMainText(page?.main_text || '').slice(0, 16);
+const gallery = page?.images?.filter((img) => img.local_path).slice(0, 8) || [];
+---
+
+<BaseLayout title={`${title} - SPA LUNAR`} description={page?.meta_description || card.short}>
+  <section class="lw-hero">
+    <div>
+      <p class="lw-kicker">Tratamento</p>
+      <h1>{title}</h1>
+      <p>{page?.meta_description || card.short}</p>
+      <div class="lw-actions">
+        <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Fazer orcamento</a>
+        <a class="lw-btn ghost" href="/contato/">Falar com a clinica</a>
+      </div>
+    </div>
+    {card.image ? <img src={`/${card.image}`} alt={title} loading="eager" /> : null}
+  </section>
+
+  <section class="lw-reading">
+    <article>
+      <h2>Sobre o tratamento</h2>
+      {paragraphs.map((line) => <p>{line}</p>)}
+    </article>
+
+    <aside>
+      <h3>Tratamentos relacionados</h3>
+      <ul>
+        {card.related.map((item) => (
+          <li>
+            <a href={`/servicos/${item.slug}/`}>{item.title}</a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </section>
+
+  {gallery.length ? (
+    <section class="lw-gallery">
+      <h2>Galeria</h2>
+      <div>
+        {gallery.map((img) => (
+          <figure>
+            <img src={`/${img.local_path}`} alt={img.alt || title} loading="lazy" />
+          </figure>
+        ))}
+      </div>
+    </section>
+  ) : null}
+</BaseLayout>

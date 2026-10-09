@@ -1,0 +1,95 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--primary);
+
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --ease-natural: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root {
+  --radius: 1.5rem;
+
+  /* Warm cream background */
+  --background: oklch(0.972 0.018 90);
+  --foreground: oklch(0.245 0.018 60);
+  --muted: oklch(0.94 0.015 80);
+  --muted-foreground: oklch(0.48 0.02 60);
+
+  /* Terracotta clay accent */
+  --primary: oklch(0.655 0.135 42);
+  --primary-foreground: oklch(0.98 0.01 90);
+
+  /* Sage secondary */
+  --secondary: oklch(0.72 0.045 130);
+  --secondary-foreground: oklch(0.245 0.018 60);
+
+  --accent: oklch(0.88 0.03 90);
+  --accent-foreground: oklch(0.245 0.018 60);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.245 0.018 60);
+
+  --border: oklch(0.245 0.018 60 / 0.1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-reveal {
+  animation: reveal-up 0.8s var(--ease-natural) both;
+}

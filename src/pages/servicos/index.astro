@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CLINIC, getServiceCards } from '../../lib/clinic-content';
+
+const services = getServiceCards();
+---
+
+<BaseLayout title="Servicos - SPA LUNAR" description="Tratamentos da SPA LUNAR: Corrente Russa, Criolipolise, Detox Corporal e Drenagens Linfaticas.">
+  <section class="lw-hero lw-simple">
+    <div>
+      <p class="lw-kicker">Nossos tratamentos</p>
+      <h1>Protocolos personalizados para sua melhor versao.</h1>
+      <p>Corpo, rosto e bem-estar com atendimento individualizado.</p>
+    </div>
+  </section>
+
+  <section class="lw-grid-section">
+    <div class="lw-cards">
+      {services.map((service) => (
+        <article class="lw-card">
+          {service.image ? <img src={`/${service.image}`} alt={service.title} loading="lazy" /> : null}
+          <div class="lw-card-body">
+            <h3>{service.title}</h3>
+            <p>{service.short}</p>
+            <a class="lw-link" href={`/servicos/${service.slug}/`}>Ver tratamento</a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="lw-center">
+      <a class="lw-btn primary" href={CLINIC.whatsappUrl} target="_blank" rel="noreferrer">Agendar avaliacao</a>
+    </div>
+  </section>
+</BaseLayout>
